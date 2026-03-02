@@ -20,9 +20,7 @@ void main() {
       String input = stdin.readLineSync()!;
       data.add(input);
       print("Data berhasil ditambahkan.");
-    }
-
-    else if (pilih == 2) {
+    } else if (pilih == 2) {
       stdout.write("Masukkan index: ");
       int index = int.parse(stdin.readLineSync()!);
       if (index < data.length) {
@@ -30,9 +28,7 @@ void main() {
       } else {
         print("Index tidak ditemukan!");
       }
-    }
-
-    else if (pilih == 3) {
+    } else if (pilih == 3) {
       stdout.write("Masukkan index: ");
       int index = int.parse(stdin.readLineSync()!);
       if (index < data.length) {
@@ -42,9 +38,7 @@ void main() {
       } else {
         print("Index tidak ditemukan!");
       }
-    }
-
-    else if (pilih == 4) {
+    } else if (pilih == 4) {
       stdout.write("Masukkan index: ");
       int index = int.parse(stdin.readLineSync()!);
       if (index < data.length) {
@@ -53,20 +47,14 @@ void main() {
       } else {
         print("Index tidak ditemukan!");
       }
-    }
-
-    else if (pilih == 5) {
+    } else if (pilih == 5) {
       print("Jumlah data: ${data.length}");
-    }
-
-    else if (pilih == 6) {
+    } else if (pilih == 6) {
       print("=== Semua Data ===");
       for (int i = 0; i < data.length; i++) {
         print("Index $i : ${data[i]}");
       }
-    }
-
-    else if (pilih == 7) {
+    } else if (pilih == 7) {
       break;
     }
   }
