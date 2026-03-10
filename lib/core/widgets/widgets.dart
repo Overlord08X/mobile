@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constants/app_constants.dart';
-import '../theme/app_theme.dart';
+import '../constants/constants.dart';
+import '../theme/theme.dart';
 
 class loadingWidget extends StatelessWidget {
   const loadingWidget({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class CustomErrorWidget extends StatelessWidget {
 
   const CustomErrorWidget({Key? key, required this.message, this.onRetry})
     : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -66,7 +66,10 @@ class EmptyWidget extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16, color: AppTheme.textSecondaryColor),
+            style: const TextStyle(
+              fontSize: 16,
+              color: AppTheme.textSecondaryColor,
+            ),
           ),
         ],
       ),
@@ -94,5 +97,14 @@ class CustomCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CircularProgressIndicator());
   }
 }

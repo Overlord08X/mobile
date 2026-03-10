@@ -1,8 +1,8 @@
+import 'package:test_1/core/constants/constants.dart';
+import 'package:test_1/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'core/constants/app_constants.dart';
-import 'core/theme/theme.dart';
-import 'features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:test_1/features/dashboard/presentation/pages/dashboard_page.dart';
 
 void main() {
   runApp(

@@ -1,3 +1,4 @@
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/dashboard_model.dart';
 import '../../data/repositories/dashboard_repository.dart';
@@ -6,7 +7,9 @@ final dashboardRepositoryProvider = Provider<DashboardRepository>((ref) {
   return DashboardRepository();
 });
 
-final dashboardDataProvider = FutureProvider<DashboardData>((ref) async {
+final dashboardDataProvider = FutureProvider.autoDispose<DashboardData>((
+  ref
+  ) async {
   final repository = ref.watch(dashboardRepositoryProvider);
   return repository.getDashboardData();
 });
@@ -18,6 +21,7 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
     loadDashboard();
   }
 
+  // Load dashboard data
   Future<void> loadDashboard() async {
     state = const AsyncValue.loading();
     try {
@@ -28,6 +32,7 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
     }
   }
 
+  // Refresh dashboard
   Future<void> refresh() async {
     state = const AsyncValue.loading();
     try {
@@ -38,6 +43,7 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
     }
   }
 
+  // Update user name (contoh untuk state management)
   void updateUserName(String newName) {
     state.whenData((data) {
       state = AsyncValue.data(data.copyWith(userName: newName));
@@ -45,14 +51,20 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
   }
 }
 
+// Dashboard Notifier Provider dengan autoDispose
 final dashboardNotifierProvider =
-    StateNotifierProvider<DashboardNotifier, AsyncValue<DashboardData>>((ref) {
+    StateNotifierProvider.autoDispose<
+      DashboardNotifier,
+      AsyncValue<DashboardData>
+      >((ref) {
       final repository = ref.watch(dashboardRepositoryProvider);
       return DashboardNotifier(repository);
     });
   
+// Selected Stat Provider
 final selectedStatIndexProvider = StateProvider<int>((ref) => 0);
 
+// Theme Mode Provider
 final ThemeModeProvider = StateProvider<bool>(
   (ref) => false,
-);
+); // false = light, true = dark
