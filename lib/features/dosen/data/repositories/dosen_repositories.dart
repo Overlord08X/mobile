@@ -1,28 +1,21 @@
+import 'dart:convert';
 import 'package:test_1/features/dosen/data/models/dosen_model.dart';
+import 'package:http/http.dart' as http;
 
 class DosenRepository {
   Future<List<DosenModel>> getDosenList() async {
-    await Future.delayed(const Duration(seconds: 1));
+    final response = await http.get(
+      Uri.parse('https://jsonplaceholder.typicode.com/users'),
+      headers: {'Accept': 'application/json'},
+    );
 
-    return [
-      DosenModel(
-        nama: 'Raihan Zulfa Kamal',
-        nip: '1234567890',
-        email: 'raihan.zulfa.kamal-2024@vokasi.unair.ac.id',
-        jurusan: 'Teknik Informatika',
-      ),
-      DosenModel(
-        nama: 'Emilya Rachmawati',
-        nip: '1234567890',
-        email: 'emilya.rachmawati-2024@vokasi.unair.ac.id',
-        jurusan: 'Teknik Informatika',
-      ),
-      DosenModel(
-        nama: 'Raiya',
-        nip: '1234567890',
-        email: 'raiya-2024@vokasi.unair.ac.id',
-        jurusan: 'Teknik Informatika',
-      ),
-    ];
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      print(data);
+      return data.map((json) => DosenModel.fromJson(json)).toList();
+    } else {
+      print('Error: ${response.statusCode} - ${response.body}');
+      throw Exception('Gagal memuat data dosen: ${response.statusCode}');
+    }
   }
 }

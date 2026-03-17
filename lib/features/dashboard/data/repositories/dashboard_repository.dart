@@ -31,7 +31,7 @@ class DashboardRepository {
           ),
           DashboardStats(
             title: 'Profile',
-            value: 'Admin',
+            value: '',
             subtitle: 'Lihat profile',
             // percentage: 3.5,
             // isIncrease: true,

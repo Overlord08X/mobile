@@ -13,19 +13,14 @@ class MahasiswaModel {
 
   factory MahasiswaModel.fromJson(Map<String, dynamic> json) {
     return MahasiswaModel(
-      nama: json['nama'] ?? '',
-      nim: json['nim'] ?? '',
+      nama: json['nama'] ?? json['name'] ?? '',
+      nim: json['nim']?.toString() ?? json['id']?.toString() ?? '',
       email: json['email'] ?? '',
-      jurusan: json['jurusan'] ?? '',
+      jurusan: json['jurusan'] ?? json['body'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'nama': nama,
-      'nim': nim,
-      'email': email,
-      'jurusan': jurusan,
-    };
+    return {'nama': nama, 'nim': nim, 'email': email, 'jurusan': jurusan};
   }
 }

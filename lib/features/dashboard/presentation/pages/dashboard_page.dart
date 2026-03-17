@@ -85,8 +85,8 @@ class DashboardPage extends ConsumerWidget {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: 
-                                      CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Selamat Datang! 👋',
@@ -205,13 +205,13 @@ class DashboardPage extends ConsumerWidget {
                         GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: 
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
-                              childAspectRatio: MediaQuery.of(context).size.width < 400 ? 0.75 : 0.85,
-                            ),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                                childAspectRatio: 0.95,
+                              ),
                           itemCount: dashboardData.stats.length,
                           itemBuilder: (context, index) {
                             final stat = dashboardData.stats[index];
@@ -229,7 +229,7 @@ class DashboardPage extends ConsumerWidget {
                                         )
                                         .state =
                                     index;
-                                  
+
                                 final statTitle = stat.title;
                                 Widget? targetPage;
 

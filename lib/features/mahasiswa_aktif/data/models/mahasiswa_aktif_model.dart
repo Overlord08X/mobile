@@ -15,11 +15,12 @@ class MahasiswaAktifModel {
 
   factory MahasiswaAktifModel.fromJson(Map<String, dynamic> json) {
     return MahasiswaAktifModel(
-      nama: json['nama'] ?? '',
-      nim: json['nim'] ?? '',
-      email: json['email'] ?? '',
-      prodi: json['prodi'] ?? '',
-      angkatan: json['angkatan'] ?? '',
+      nama: json['nama'] ?? json['title'] ?? '',
+      nim: json['nim']?.toString() ?? json['id']?.toString() ?? '',
+      email: json['email'] ?? 'user${json['userId'] ?? ''}@example.com',
+      prodi: json['prodi'] ?? json['body'] ?? '',
+      angkatan:
+          json['angkatan']?.toString() ?? json['userId']?.toString() ?? '2024',
     );
   }
 
