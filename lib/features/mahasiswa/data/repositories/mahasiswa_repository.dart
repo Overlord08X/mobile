@@ -1,42 +1,36 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+
+import 'package:test_1/core/network/dio_client.dart';
 import 'package:test_1/features/mahasiswa/data/models/mahasiswa_model.dart';
+import 'package:dio/dio.dart';
 
 class MahasiswaRepository {
-  static const _baseUrl = 'https://jsonplaceholder.typicode.com';
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: _baseUrl,
-      headers: {
-        'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'DNT': '1',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-      },
-      connectTimeout: Duration(seconds: 10),
-      receiveTimeout: Duration(seconds: 10),
-    ),
-  );
+  final DioClient _dioClient;
 
+  MahasiswaRepository({DioClient? dioClient})
+    : _dioClient = dioClient ?? DioClient();
+
+  // get data daftar mahasiswa
   Future<List<MahasiswaModel>> getMahasiswaList() async {
-    final response = await _dio.get('/comments');
-
-    if (response.statusCode != 200) {
-      throw Exception('Gagal memuat data (status: ${response.statusCode})');
+    try {
+      final Response response = await _dioClient.dio.get(
+        '/users',
+        options: Options(
+          connectTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
+          sendTimeout: const Duration(seconds: 30),
+        ),
+      );
+      final List<dynamic> data = response.data;
+      return data.map((json) => MahasiswaModel.fromJson(json)).toList();
+    } on DioError catch (e) {
+      final statusCode = e.response?.statusCode;
+      final message = e.message;
+      throw Exception(
+        'Gagal memuat data mahasiswa: ${statusCode ?? 'unknown'} - $message',
+      );
+    } catch (e, stackTrace) {
+      throw Exception('Gagal memuat data mahasiswa: ${e.toString()}');
     }
-
-    final data = response.data;
-    if (data is! List) {
-      throw Exception('Format data tidak valid');
-    }
-
-    return data
-        .cast<Map<String, dynamic>>()
-        .take(20)
-        .map((json) => MahasiswaModel.fromJson(json))
-        .toList();
   }
 }

@@ -1,21 +1,36 @@
 import 'dart:convert';
+
+import 'package:test_1/core/network/dio_client.dart';
 import 'package:test_1/features/dosen/data/models/dosen_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class DosenRepository {
-  Future<List<DosenModel>> getDosenList() async {
-    final response = await http.get(
-      Uri.parse('https://jsonplaceholder.typicode.com/users'),
-      headers: {'Accept': 'application/json'},
-    );
+  final DioClient _dioClient;
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      print(data);
+  DosenRepository({DioClient? dioClient})
+    : _dioClient = dioClient ?? DioClient();
+
+  // get data daftar dosen
+  Future<List<DosenModel>> getDosenList() async {
+    try {
+      final Response response = await _dioClient.dio.get(
+        '/users',
+        options: Options(
+          connectTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
+          sendTimeout: const Duration(seconds: 30),
+        ),
+      );
+      final List<dynamic> data = response.data;
       return data.map((json) => DosenModel.fromJson(json)).toList();
-    } else {
-      print('Error: ${response.statusCode} - ${response.body}');
-      throw Exception('Gagal memuat data dosen: ${response.statusCode}');
+    } on DioError catch (e) {
+      final statusCode = e.response?.statusCode;
+      final message = e.message;
+      throw Exception(
+        'Gagal memuat data dosen: ${statusCode ?? 'unknown'} - $message',
+      );
+    } catch (e, stackTrace) {
+      throw Exception('Gagal memuat data dosen: ${e.toString()}');
     }
   }
 }

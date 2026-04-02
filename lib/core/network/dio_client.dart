@@ -1,0 +1,39 @@
+import 'package:test_1/core/services/local_storage_service.dart';
+import 'package:dio/dio.dart';
+
+class DioClient {
+  static const String _baseUrl = 'https://jsonplaceholder.typicode.com';
+
+  final Dio _dio;
+  final LocalStorageService _localStorage;
+
+  DioClient({LocalStorageService? localStorage})
+    : _localStorage = localStorage ?? LocalStorageService(),
+      _dio = Dio(
+        BaseOptions(
+          baseUrl: _baseUrl,
+          connectTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
+          sendTimeout: const Duration(seconds: 30),
+          headers: {'Accept': 'application/json'},
+        ),
+      ) {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // Otomatis sisipkan token dari sharedPreferences
+          final token = await _localStorage.getToken();
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          handler.next(options);
+        },
+        onError: (response, handler) {
+          handler.next(response);
+        },
+      ),
+    );
+  }
+
+  Dio get dio => _dio;
+}
